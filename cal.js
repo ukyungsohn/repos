@@ -35,20 +35,21 @@ calculatorApp.controller('calculatorController', function calculatorController($
     //전역변수는 안좋다. 그럼 어디에 어떻게 쓰지?
     let oprClicked = false;
     let operator = {value: '', used: false};
-    let firstNumber = {value: 0, hasFirstNumber: false};
-    let secondNumber ={value: undefined};
+    let firstNum = {value: 0, hasfirstNum: false};
+    let secondNum ={value: undefined};
     let result = 0;
+    let insertSpan = document.querySelector('#insert');
+    let processSpan = document.querySelector('#process');
     
     $scope.buttonClick = function(buttonItem) {
-        let insertSpan = document.querySelector('#insert');
-        let processSpan = document.querySelector('#process');
-        let beNum = 0;        
-        
+        let beNum = 0;    
         
         if (buttonItem.type === 'number') {
             if (!oprClicked) {
+                //연산자 클릭하지 않았다면 숫자 입력시 insertspan의 숫자에 숫자가 붙는다.
                 insertSpan.textContent += buttonItem.label;
-            } else {              
+            } else {             
+                //연산자 클릭한 후라면 입력창에 입력한 값이 새로 셋팅된다. 
                 insertSpan.textContent = buttonItem.label;
                 oprClicked = false;
                 
@@ -62,20 +63,21 @@ calculatorApp.controller('calculatorController', function calculatorController($
             if (!operator.used) {
                 operator.value = buttonItem.value;
             }
-        
+
+            //입력받은 문자열 숫자로 만들기
             beNum = Number(insertSpan.textContent);
         
-            if(!firstNumber.hasFirstNumber) {
-                firstNumber.value = beNum;
-                firstNumber.hasFirstNumber = true;
-                //secondNumber.value = undefined;
+            if(!firstNum.hasfirstNum) {
+                firstNum.value = beNum;
+                firstNum.hasfirstNum = true;
+                //secondNum.value = undefined;
             } else {
-                secondNumber.value = beNum;
-                firstNumber.hasFirstNumber = false;
+                secondNum.value = beNum;
+                firstNum.hasfirstNum = false;
             }
-        
-            firstNumber.value = equal(operator, firstNumber.value, secondNumber.value);
-            insertSpan.textContent = firstNumber.value;
+            //첫번째, 연산자, 두번째 입력값을 받았다면 연산 후 새로운 첫번째 입력값이 된다. 
+            firstNum.value = equal(operator, firstNum.value, secondNum.value);
+            insertSpan.textContent = firstNum.value;
         
             if (buttonItem.value === '+') {
                 processSpan.textContent = beNum + '+'; 
@@ -92,12 +94,17 @@ calculatorApp.controller('calculatorController', function calculatorController($
             insertSpan.textContent = '';
             processSpan.textContent = '';
             beNum = 0;
+            firstNum.value = 0;
+            firstNum.hasfirstNum = false;
+            secondNum.value = 0;
         }
     };
     
     function equal(operator, num1, num2) {        
+        firstNum.hasfirstNum = true;
         if (num2 === undefined) {
             //operator.used = false;
+            //두번째 값을 입력받지 않았다면 첫번째 입력값은 계속해서 첫번째 입력값이다.
             return num1;
         }
         //operator.used = true;
@@ -108,6 +115,7 @@ calculatorApp.controller('calculatorController', function calculatorController($
     }
     
     function plus(num1, num2) {
+        //num2가 없어도 연산될 수 있게
         num2 = num2 || 0;
         return num1 + num2;
     }

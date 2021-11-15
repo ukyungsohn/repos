@@ -45,7 +45,7 @@ calculatorApp.controller('calculatorController', function calculatorController($
         let beNum = 0;    
         
         if (buttonItem.type === 'number') {
-            if (!oprClicked) {
+            if (!oprClicked && beNum !== 0) {
                 //연산자 클릭하지 않았다면 숫자 입력시 insertspan의 숫자에 숫자가 붙는다.
                 insertSpan.textContent += buttonItem.label;
             } else {             
@@ -56,17 +56,18 @@ calculatorApp.controller('calculatorController', function calculatorController($
             }
         } 
         
-        if (buttonItem.type === 'operator') {
+        if (buttonItem.type === 'operator' || buttonItem.type === 'equal') {
             oprClicked = true;
             //이전 연산자가 쓰이지 않았다면 
             //6+7-일때 +로 연산하기 위해서
-            if (!operator.used) {
+            if (!operator.used && buttonItem.type === 'operator') {
                 operator.value = buttonItem.value;
             }
 
             //입력받은 문자열 숫자로 만들기
             beNum = Number(insertSpan.textContent);
         
+            //첫번째 숫자가 입력된 적이 없다면 첫번째 숫자에 입력값을 저장한다.
             if(!firstNum.hasfirstNum) {
                 firstNum.value = beNum;
                 firstNum.hasfirstNum = true;
@@ -75,42 +76,57 @@ calculatorApp.controller('calculatorController', function calculatorController($
                 secondNum.value = beNum;
                 firstNum.hasfirstNum = false;
             }
-            //첫번째, 연산자, 두번째 입력값을 받았다면 연산 후 새로운 첫번째 입력값이 된다. 
+
+            //첫번째, 연산자, 두번째 입력값을 받았다면 연산 후의 결과값은 새로운 첫번째 입력값이 된다. 
             firstNum.value = equal(operator, firstNum.value, secondNum.value);
-            insertSpan.textContent = firstNum.value;
-        
-            if (buttonItem.value === '+') {
-                processSpan.textContent = beNum + '+'; 
-        
-            } 
-        }
-        
-        if (buttonItem.type === 'equal') {
-            
-        
+
+            insertSpan.textContent = firstNum.value;        
+            processSpan.textContent = displayProcess(buttonItem.value, beNum);
+
         }
         
         if (buttonItem.type === 'reset') {
             insertSpan.textContent = '';
             processSpan.textContent = '';
             beNum = 0;
-            firstNum.value = 0;
+            firstNum.value = 0;            
             firstNum.hasfirstNum = false;
+            insertSpan.textContent = firstNum.value;
             secondNum.value = 0;
         }
     };
     
+    function displayProcess(operator, number) {
+        switch(operator) {
+            case '+':
+                return number + '+'; 
+            case '-':
+                return number + '-';
+            case '*':
+                return number + '*';
+            case '/':
+                return number + '/';            
+            default:         
+                processSpan.textContent = '';
+        }
+    }
     function equal(operator, num1, num2) {        
         firstNum.hasfirstNum = true;
         if (num2 === undefined) {
             //operator.used = false;
-            //두번째 값을 입력받지 않았다면 첫번째 입력값은 계속해서 첫번째 입력값이다.
+            //두번째 값을 입력받지 않았다면 equal의 결과값은 첫번째 입력값이다.
             return num1;
         }
         //operator.used = true;
         switch(operator.value) {
-            case '+': 
-                return plus(num1, num2);
+        case '+':  
+            return plus(num1, num2);
+        case '-':
+            return minus(num1, num2);
+        case '*':
+            return multiply(num1, num2);
+        case '/':
+            return division(num1, num2);
         }
     }
     
@@ -118,6 +134,21 @@ calculatorApp.controller('calculatorController', function calculatorController($
         //num2가 없어도 연산될 수 있게
         num2 = num2 || 0;
         return num1 + num2;
+    }
+
+    function minus(num1, num2) {
+        num2 = num2 || 0;
+        return num1 - num2;
+    }
+
+    function multiply(num1, num2) {
+        num2 = num2 || 0;
+        return num1 * num2;        
+    }
+
+    function division(num1, num2) {
+        num2 = num2 || 0;
+        return num1 / num2;      
     }
 
 });

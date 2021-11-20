@@ -56,8 +56,7 @@ calculatorApp.controller('calculatorController', function calculatorController($
             } else {             
                 //연산자 클릭한 후라면 입력창에 입력한 값이 새로 셋팅된다. 
                 insertSpan.textContent = buttonItem.label;
-                oprClicked = false;
-                
+                oprClicked = false;                
             }
         }
         
@@ -81,7 +80,11 @@ calculatorApp.controller('calculatorController', function calculatorController($
             }
 
             if (buttonItem.type === 'equal') {
-                operator.value = newOperator;
+                if (newOperator) {
+                    operator.value = newOperator;
+                } else {
+                    operator.value = oldOperator;
+                }
             }
 
             //입력받은 문자열 숫자로 만들기

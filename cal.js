@@ -34,16 +34,21 @@ calculatorApp.controller('calculatorController', function calculatorController($
     //주석을 써라.
     //전역변수는 안좋다. 그럼 어디에 어떻게 쓰지?
     let oprClicked = false;
-    let operator = {value: '', used: false};
+    let oldOperator = undefined;
+    let newOperator = undefined;
+    //operator.procedure의 1,2는 클릭하기 전 이전의 연산자를 기억하기 위함이다.
+    let operator = {value: '', procedure: 1};
     let firstNum = {value: 0, hasfirstNum: false};
     let secondNum ={value: undefined};
-    let result = 0;
     let insertSpan = document.querySelector('#insert');
     let processSpan = document.querySelector('#process');
-    
+    let equalUsed = false;
+
+
+    //!!!나중에 연산자에 따른 case문으로 바꾸자. 공통부분은 함수로 쓰고.
     $scope.buttonClick = function(buttonItem) {
         let beNum = 0;    
-        
+
         if (buttonItem.type === 'number') {
             if (!oprClicked && beNum !== 0) {
                 //연산자 클릭하지 않았다면 숫자 입력시 insertspan의 숫자에 숫자가 붙는다.
@@ -54,14 +59,29 @@ calculatorApp.controller('calculatorController', function calculatorController($
                 oprClicked = false;
                 
             }
-        } 
+        }
         
         if (buttonItem.type === 'operator' || buttonItem.type === 'equal') {
             oprClicked = true;
             //이전 연산자가 쓰이지 않았다면 
             //6+7-일때 +로 연산하기 위해서
-            if (!operator.used && buttonItem.type === 'operator') {
-                operator.value = buttonItem.value;
+            if (buttonItem.type === 'operator') {
+                if (!oldOperator) {
+                    oldOperator = buttonItem.value;
+                } else {
+                    newOperator = buttonItem.value;
+                }
+                
+                //클릭했을 때의 연산자기호와 이전 연산자기호가 다르면 이전 연산자기호로 연산한다. 
+                if (oldOperator !== newOperator) {
+                    operator.value = oldOperator;
+                } else {
+                    operator.value = newOperator;
+                }
+            }
+
+            if (buttonItem.type === 'equal') {
+                operator.value = newOperator;
             }
 
             //입력받은 문자열 숫자로 만들기
@@ -73,18 +93,35 @@ calculatorApp.controller('calculatorController', function calculatorController($
                 firstNum.hasfirstNum = true;
                 //secondNum.value = undefined;
             } else {
-                secondNum.value = beNum;
-                firstNum.hasfirstNum = false;
+                //equal버튼을 클릭했는데 다음 클릭이 또 equal이라면 secondNum은 바뀌지 않는다.
+                if (!(equalUsed && (buttonItem.type === 'equal'))) {
+                    secondNum.value = beNum;
+                    firstNum.hasfirstNum = false;
+                } 
             }
 
+            let oldFirstNum = firstNum.value;
             //첫번째, 연산자, 두번째 입력값을 받았다면 연산 후의 결과값은 새로운 첫번째 입력값이 된다. 
             firstNum.value = equal(operator, firstNum.value, secondNum.value);
 
-            insertSpan.textContent = firstNum.value;        
-            processSpan.textContent = displayProcess(buttonItem.value, beNum);
+            insertSpan.textContent = firstNum.value;   
 
+            //equal클릭 시, 연산자 기호와 등호를 모두 보여줘야 한다.
+            processSpan.textContent = buttonItem.type !== 'equal' 
+                                        ? displayProcess(buttonItem.value, firstNum.value)
+                                        : displayEqualProcess(operator, oldFirstNum, secondNum.value);
+                                        
+            if (newOperator) {
+                oldOperator = newOperator;
+            }
         }
         
+        if (buttonItem.type === 'equal') {
+            equalUsed = true;
+        } else {
+            equalUsed = false;
+        }
+
         if (buttonItem.type === 'reset') {
             insertSpan.textContent = '';
             processSpan.textContent = '';
@@ -93,9 +130,31 @@ calculatorApp.controller('calculatorController', function calculatorController($
             firstNum.hasfirstNum = false;
             insertSpan.textContent = firstNum.value;
             secondNum.value = 0;
+
+            oprClicked = false;
+            oldOperator = '';
+            newOperator = '';
+            operator.value = '';
+            operator.procedure = 1;
+            equalUsed = false;
         }
     };
-    
+    function displayEqualProcess(operator, num1, num2) {
+        console.log('opr',operator);
+        switch(operator.value) {
+            case '+':
+                return num1 + '+' + num2 + '='; 
+            case '-':
+                return num1 + '-' + num2 + '='; 
+            case '*':
+                return num1 + '*' + num2 + '='; 
+            case '/':
+                return num1 + '/' + num2 + '=';
+            default:         
+                processSpan.textContent = '';
+        }
+    }
+
     function displayProcess(operator, number) {
         switch(operator) {
             case '+':
@@ -142,12 +201,12 @@ calculatorApp.controller('calculatorController', function calculatorController($
     }
 
     function multiply(num1, num2) {
-        num2 = num2 || 0;
+        num2 = num2 || 1;
         return num1 * num2;        
     }
 
     function division(num1, num2) {
-        num2 = num2 || 0;
+        num2 = num2 || 1;
         return num1 / num2;      
     }
 

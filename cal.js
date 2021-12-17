@@ -34,6 +34,7 @@ calculatorApp.controller('calculatorController', function calculatorController($
     //주석을 써라.
     //전역변수는 안좋다. 그럼 어디에 어떻게 쓰지?
     let oprClicked = false;
+    let equalUsed = false;
     let operator = {value: '', used: false};
     let firstNum = {value: 0, hasfirstNum: false};
     let secondNum ={value: undefined};
@@ -55,7 +56,8 @@ calculatorApp.controller('calculatorController', function calculatorController($
                 
             }
         } 
-        
+        equalUsed = (buttonItem.type === 'equal');
+
         if (buttonItem.type === 'operator' || buttonItem.type === 'equal') {
             oprClicked = true;
             //이전 연산자가 쓰이지 않았다면 
@@ -76,11 +78,12 @@ calculatorApp.controller('calculatorController', function calculatorController($
                 secondNum.value = beNum;
                 firstNum.hasfirstNum = false;
             }
-
+            console.log(operator, firstNum.value, secondNum.value);
             //첫번째, 연산자, 두번째 입력값을 받았다면 연산 후의 결과값은 새로운 첫번째 입력값이 된다. 
-            firstNum.value = equal(operator, firstNum.value, secondNum.value);
+            secondNum.value = equal(operator, firstNum.value, secondNum.value);
+            console.log(operator, firstNum.value, secondNum.value);
 
-            insertSpan.textContent = firstNum.value;        
+            insertSpan.textContent = secondNum.value;        
             processSpan.textContent = displayProcess(buttonItem.value, beNum);
 
         }
@@ -106,8 +109,8 @@ calculatorApp.controller('calculatorController', function calculatorController($
                 return number + '*';
             case '/':
                 return number + '/';            
-            default:         
-                processSpan.textContent = '';
+            default:        
+                return '';
         }
     }
     function equal(operator, num1, num2) {        

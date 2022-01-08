@@ -1,0 +1,63 @@
+<html>
+<head>
+    <meta charset="utf-8">
+<style>
+    #display {
+        width: 200px;
+        height: 200px;
+        /* background-color: red; */
+        border: 1px solid black;
+    }
+</style>
+</head>
+<body>
+<div id="display"></div>
+<div id="timeDiff"></div>
+<div id="average"></div>
+<script>
+const $display = document.querySelector('#display');
+$display.style.backgroundColor = 'blue';
+const $timeDiff = document.querySelector('#timeDiff');
+const $average = document.querySelector('#average');
+let greenTime = 0;
+let clickTime = 0;
+let timeArr = [];
+
+const getAverage = (timeArr) => {
+    let sum = 0;
+    for (let i = 0; i < timeArr.length; ++i) {
+        sum += parseInt(timeArr[i]);
+    }
+    return (sum / timeArr.length);
+};
+
+
+$display.addEventListener('click', () => {
+    if ($display.style.backgroundColor === 'blue') {
+        console.log('blue');
+        $display.style.backgroundColor = 'red';
+        let random = Math.ceil(Math.random() * 2 + 1) * 1000;
+        setTimeout(() => {
+            $display.style.backgroundColor = 'green';
+            greenTime = new Date();
+        }, random); 
+    } else if ($display.style.backgroundColor === 'red') { 
+        console.log('red');
+        console.log('성급해요');  
+        $display.style.backgroundColor = 'blue';
+    } else if ($display.style.backgroundColor === 'green') {
+        console.log('green');
+        clickTime = new Date();
+        timeArr.push(clickTime);
+        $timeDiff.textContent = clickTime - greenTime;
+        let average = getAverage(timeArr);
+        $average.textContent = `평균 ${average}초`;
+        $display.style.backgroundColor = 'blue';
+    }
+});
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html ng-app="calculatorApp">
+<head>
+    <link rel="stylesheet" href="cal.css">
+    <script src="lib/angular.js"></script>
+    <script src="cal_old.js"></script>
+</head>
+<body ng-controller="calculatorController">
+    <div class="div1">    
+        <div class="calculator">
+            <div class="display">
+                <div class="process">
+                    <span id="process"></span>
+                </div>
+                <div class="insert">
+                    <span id="insert">0</span>
+                </div>
+            </div>
+            <div class="buttons">
+                <div class="leftButtons">
+                    <div class="button" ng-repeat="node in leftButtons" ng-click="buttonClick(node);">
+                        <span>{{node.label}}</span>
+                    </div>
+                </div>    
+                <div class="rightButtons">
+                    <div class="button" ng-repeat="node in rightButtons" ng-click="buttonClick(node);">
+                        <span>{{node.label}}</span>
+                    </div>
+                </div>
+                <div class="bottomButtons">
+                    <div class="button" ng-click="buttonClick(buttomButtons);">
+                        <span>{{buttomButtons.label}}</span>
+                    </div>
+                </div>
+            </div>        
+        </div>
+    </div>
+
+</body>
+</html>

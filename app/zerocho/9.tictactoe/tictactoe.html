@@ -1,0 +1,64 @@
+<head>
+<meta charset="utf-8" />
+<title>틱택토</title>
+
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    td {
+        border: 1px solid black;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<script>
+    let turn = 'O';
+    const data = [];
+    const $table = document.createElement('table');
+    document.body.append($table);
+    for (let i = 0; i < 3; ++i) {
+        data.push([]);
+    }
+    for (let i = 0; i < 3; ++i) {
+        const $tr = document.createElement('tr');
+        
+        for (let j = 0; j < 3; ++j) {
+            const $td = document.createElement('td');
+            $td.addEventListener('click', (event) => {
+                //칸에 글자가 있나?
+                //칸에 글자O가 있는데 클릭하면 X덮어쓰기가 되지 않아야하고
+                //                          X의 turn에서 O의 turn으로 바뀌지 않아야한다.
+                //없다.
+                /*
+                if (!event.target.textContent) {
+                    event.target.textContent = turn;                                    
+                    if (turn === 'X') {
+                        turn = 'O';    
+                    } else if (turn === 'O') {
+                        turn = 'X';
+                    }
+                }
+                */
+                if (event.target.textContent) return;
+                event.target.textContent = turn;                                    
+                if (turn === 'X') {
+                    turn = 'O';    
+                } else if (turn === 'O') {
+                    turn = 'X';
+                }
+                //승부 확인
+                
+
+                
+            });
+            $tr.append($td);
+        }
+        $table.append($tr);
+    }
+</script>
+</body>

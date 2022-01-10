@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>로또추첨기</title>
+    <style>
+        .ball {
+            display: inline-block;
+            border: 1px solid black;
+            border-radius: 20px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 20px;
+            text-align: center;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+<div id="result">추첨 결과는?</div>
+<div id="bonus">보너스: </div>
+<script>
+    //피셔 예이츠 셔플
+    const candidate = Array(45).fill().map((v, i) => i + 1);
+    const shuffle = [];
+    while (candidate.length > 0) {
+        const random = Math.floor(Math.random() * candidate.length); //무작위 인덱스 뽑기
+        const spliceArray = candidate.splice(random, 1); //뽑은 값은 배열에 들어있음.
+        const value = spliceArray[0]; //배열에 들어있는 값을 꺼내어
+        shuffle.push(value); // shuffle 배열에 넣기
+    }
+    
+    const winBalls = shuffle.splice(0, 6).sort((a, b) => a - b ); // { return} 생략됨.
+    const bonus = shuffle[6];
+
+    const $result = document.querySelector('#result');  
+    const $bonus = document.querySelector('#bonus');
+
+    const colorize = (number, $tag) => {
+        if (number < 10) {
+            $tag.style.backgroundColor = 'red',
+            $tag.style.color = 'white';
+        } else if (number < 20) {
+            $tag.style.backgroundColor = 'orange';
+        } else if (number < 30) {
+            $tag.style.backgroundColor = 'yellow';
+        } else if (number < 40) {
+            $tag.style.backgroundColor = 'blue';
+            $tag.style.color = 'white';
+        } else if (number >= 40) {
+            $tag.style.backgroundColor = 'green';
+            $tag.style.color = 'white';
+        }
+    };
+
+    const drawBall = (number, $parent) => {
+        const $ball = document.createElement('div');
+        $ball.className = 'ball';
+        $ball.textContent = number;
+        colorize(number, $ball);
+        $parent.append($ball);
+    };
+
+    for (let i = 0; i < winBalls.length; ++i) {
+        setTimeout(() => {drawBall(winBalls[i], $result)}, 1000 * (i + 1))
+    }
+
+    setTimeout(() => {drawBall(bonus, $bonus)}, 7000);
+    
+</script>
+</body>

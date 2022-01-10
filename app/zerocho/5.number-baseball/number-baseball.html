@@ -1,0 +1,155 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>숫자야구</title>
+</head>
+<body>
+<form id="form">
+    <input type="text" id="input">
+    <button>확인</button>
+</form>
+<div id="logs"></div>
+<script>
+    const $input = document.querySelector('#input');
+    const $form = document.querySelector('#form');
+    const $logs = document.querySelector('#logs');
+    let out = 0;
+    /*
+    let arr = [];
+    while(arr.length < 4) {
+        let number = Math.floor(Math.random() * 9 + 1);
+        if (arr.indexOf(number) === -1) {
+            arr.push(number);
+        }
+    }
+    */
+    let numbers = [];
+    for (let i = 0; i < 9; ++i) {
+        numbers.push(i + 1);
+    }
+
+    let answer = [];
+    for (let i = 0; i <= 3; ++ i) {
+        const index = Math.floor(Math.random() * numbers.length);
+        //const index = Math.floor(Math.random() * (9 - i));
+        answer.push(numbers[index]);
+        numbers.splice(index, 1);
+    }
+    console.log(answer);
+
+    const tries = [];
+    const checkInput = function(input) {
+        //검증하기. 자리수가 맞는지, 중복된 수가 없는지
+        if (input.length !== 4) {
+            return alert('4자리의 숫자를 써주세요.');
+        }
+
+        /*
+        if (tries.indexOf(input) !== -1) {
+            return alert('이미 시도했던 값입니다.');         
+        }
+        */
+        if (tries.includes(input)) {
+            return alert('이미 시도했던 값입니다.');
+        }
+        //tries.push(input);
+        
+        if (new Set(input).size !== 4) {
+            return alert('중복된 수가 있습니다.');
+        }
+        /*
+        let duplicate = false;
+        for (let i = 0; i < input.length; ++i) {
+            const numOne = input[i];
+
+            for (let j = i + 1; j < input.length; ++j) {
+                const numTwo = input[j];
+                if (numOne === numTwo) {
+                    duplicate = true;
+                    return alert('중복된 수가 있습니다.');
+                }
+            }
+        }
+        */
+       return true;
+    }
+
+    $form.addEventListener('submit', (event) => {
+        //서버로 데이터를 보내고(주소에?붙여지고) 돌려받으며 새로고침과 같은 동작을 한다.
+        event.preventDefault(); //기본 동작 막기
+        //const value = event.target[0].value
+        const value = $input.value;
+        $input.value = '';
+        //alert의 return은 undefined고 Boolean(undefined) === false.        
+        if(!checkInput(value)) {
+            //에러
+
+            
+        } 
+        
+        //입력값 문제 없음.       
+            
+        /*
+        let isHomerun = true;
+        //홈런인가
+        for (let i = 0; i < answer.length; ++i) {
+            console.log(answer[i], value[i]);
+            if (answer[i] !== parseInt(value[i])) {
+                isHomerun = false;
+                break;
+            }
+        }
+        if(isHomerun) {
+            alert('홈런!');
+        }
+        */
+        if (answer.join('') === value) {
+            $logs.textContent = '홈런!';
+            //$logs.innerHTML = $logs.textContent + '</br>홈런';
+            //innerHTML은 textContent와 달리 html태그도 인식함.
+            return;
+        } 
+
+        if (tries.length >= 9) {
+            // $logs.textContent = `패배! 정답은 ${answer.join('')}`;            
+            const message = document.createTextNode(`패배! 정답은 ${answer.join('')}`);
+            $logs.appendChild(message);
+            //$logs.append(document.createElement('br'));
+            return;
+        }
+        //몇 볼 몇 스트라이크인지 표시하기
+        
+        let strike = 0;
+        let ball = 0;        
+        //자리도 숫자도 맞으면 스트라이크
+        for (let i = 0; i < answer.length; ++i) {        
+            if (answer[i] === parseInt(value[i])) {                
+                ++strike;
+            } else {
+                if (answer.indexOf(parseInt(value[i])) !== -1) {
+                    ++ball;
+                }
+            }
+        }
+
+        if (ball || strike) {
+            //appendChild와의 차이점.
+            //-문자열은 createTextNode 안 해도 됨.
+            //-append에 여러개도 추가 가능.
+            $logs.append(`${value}: ${strike} 스트라이크, ${ball} 볼`, document.createElement('br'));        
+        } else {
+            ++out;
+            $logs.append(`${value}: ${out} 아웃 입니다.`, document.createElement('br'));
+        }
+        
+        if (out === 3) {
+            alert('3 아웃으로 패배했습니다.');
+            return;
+        }
+
+        tries.push(value);
+    });
+
+</script>
+</body>
+</html>

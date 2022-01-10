@@ -34,11 +34,16 @@ calculatorApp.controller('calculatorController', function calculatorController($
     //주석을 써라.
     //전역변수는 안좋다. 그럼 어디에 어떻게 쓰지?
     let oprClicked = false;
+<<<<<<< HEAD:cal.js
+    let equalUsed = false;
+    let operator = {value: '', used: false};
+=======
     let numClicked = false;
     let oldOperator = undefined;
     let newOperator = undefined;
     //operator.procedure의 1,2는 클릭하기 전 이전의 연산자를 기억하기 위함이다.
     let operator = {value: '', procedure: 1};
+>>>>>>> a69a2abab372fc849794edd880de996900b24e4f:cal/cal_old.js
     let firstNum = {value: 0, hasfirstNum: false};
     let secondNum ={value: undefined};
     let insertSpan = document.querySelector('#insert');
@@ -64,8 +69,14 @@ calculatorApp.controller('calculatorController', function calculatorController($
                 insertSpan.textContent = buttonItem.label;
                 oprClicked = false;                
             }
+<<<<<<< HEAD:cal.js
+        } 
+        equalUsed = (buttonItem.type === 'equal');
+
+=======
         }
         
+>>>>>>> a69a2abab372fc849794edd880de996900b24e4f:cal/cal_old.js
         if (buttonItem.type === 'operator' || buttonItem.type === 'equal') {
             oprClicked = true;            
             //이전 연산자가 쓰이지 않았다면 
@@ -109,6 +120,15 @@ calculatorApp.controller('calculatorController', function calculatorController($
                     firstNum.hasfirstNum = false;
                 } 
             }
+<<<<<<< HEAD:cal.js
+            console.log(operator, firstNum.value, secondNum.value);
+            //첫번째, 연산자, 두번째 입력값을 받았다면 연산 후의 결과값은 새로운 첫번째 입력값이 된다. 
+            secondNum.value = equal(operator, firstNum.value, secondNum.value);
+            console.log(operator, firstNum.value, secondNum.value);
+
+            insertSpan.textContent = secondNum.value;        
+            processSpan.textContent = displayProcess(buttonItem.value, beNum);
+=======
 
             let oldFirstNum = firstNum.value;
             
@@ -122,6 +142,7 @@ calculatorApp.controller('calculatorController', function calculatorController($
             //}
 
             insertSpan.textContent = firstNum.value;   
+>>>>>>> a69a2abab372fc849794edd880de996900b24e4f:cal/cal_old.js
 
             //equal클릭 시, 연산자 기호와 등호를 모두 보여줘야 한다.
             processSpan.textContent = buttonItem.type !== 'equal' 
@@ -183,8 +204,8 @@ calculatorApp.controller('calculatorController', function calculatorController($
                 return number + '*';
             case '/':
                 return number + '/';            
-            default:         
-                processSpan.textContent = '';
+            default:        
+                return '';
         }
     }
     function equal(operator, num1, num2) {        

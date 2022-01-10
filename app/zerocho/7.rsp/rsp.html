@@ -1,0 +1,163 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>가위바위보</title>
+    <style>
+        #computer {width: 142px; height: 200px;}
+    </style>
+</head>
+<body>
+<div id="computer"></div>
+<div>
+    <button id="scissors" class="btn">가위</button>
+    <button id="rock" class="btn">바위</button>
+    <button id="paper" class="btn">보</button>
+</div>
+<div id="score">0</div>
+<script>
+    const $computer = document.querySelector('#computer');
+    const $score = document.querySelector('#score');
+    const $rock = document.querySelector('#rock');
+    const $scissors = document.querySelector('#scissors');
+    const $paper = document.querySelector('#paper');
+    const IMG_URL = './rsp.png';
+    $computer.style.background = `url(${IMG_URL}) 0 0`; //가로세로 위치
+    $computer.style.backgroundSize = 'auto 200px'; //가로세로 너비
+
+    const rspX = {
+        scissors: '0',
+        rock: '-220px',
+        paper: '-440px'
+    }
+    
+    let computerChoice = 'scissors';
+    const changeComputerHand = () => {
+        if (computerChoice === 'scissors') {
+            computerChoice = 'rock';            
+        } else if (computerChoice === 'rock') {
+            computerChoice = 'paper';
+        } else if (computerChoice === 'paper') {
+            computerChoice = 'scissors';
+        }
+        $computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
+        //안 써주면 리셋됨. background와 backgroudSize는 한 세트임.
+        //$computer.style.background = `url(${IMG_URL}) 0 0 / auto 200px`;
+        $computer.style.backgroundSize = 'auto 200px';
+    
+        //재귀함수
+        //(2)setTimeout(changeComputerHand, 50);    
+    }
+    //재귀함수 이용해서 setInterval ===> setTimeout
+    //(1)setTimeout(changeComputerHand, 50);
+    //(*)setInterval(changeComputerHand, 50);
+
+    let intervalId = setInterval(changeComputerHand, 50);
+    
+    /* 버그 
+    const clickButton = () => {
+        clearInterval(intervalId);
+        setTimeout(() => {            
+            intervalId = setInterval(changeComputerHand, 50);
+        }, 1000);
+    };
+    */
+    /* 버그 고치기 (1)
+    const clickButton = () => {
+        clearInterval(intervalId);
+        setTimeout(() => {
+            //연달아 중복돼 쓴 것 처럼 보이지만 실행시간이 다르다.
+            //혹시모르게 직전에 지워지지 않은 intervalId를 지워준다.
+            clearInterval(intervalId);
+            intervalId = setInterval(changeComputerHand, 50);
+        }, 1000);
+    };
+    */
+   /* 버그 고치기 (2)
+    const clickButton = () => {
+        clearInterval(intervalId);
+        
+        //이벤트 전달되지 않게
+        $rock.removeEventListener('click', clickButton);
+        $scissors.removeEventListener('click', clickButton);
+        $paper.removeEventListener('click', clickButton);
+        
+        setTimeout(() => {
+            $rock.addEventListener('click', clickButton);
+            $scissors.addEventListener('click', clickButton);
+            $paper.addEventListener('click', clickButton);            
+            
+            intervalId = setInterval(changeComputerHand, 50);
+        }, 1000);
+    };
+   */
+    //버그 고치기 (3)
+    //flag 변수에 따라 안의 코드가 실행되냐 마냐를 결정
+    let clickable = true;
+   
+    let scoreTable = {
+        scissors: 1,
+        rock: 0,
+        paper: -1
+    }
+
+    //let score = 0;
+    let count = 0;
+    let me = 0;
+    let computer = 0;
+
+    const clickButton = (event) => {
+        if (clickable) {
+            clearInterval(intervalId);
+            clickable = false;
+
+            //const myChoice = event.target.id;
+            const myChoice = event.target.textContent === '바위' 
+                ? 'rock' 
+                : event.target.textContent === '가위' 
+                    ? 'scissors' 
+                    : 'paper';    
+
+            const myScore = scoreTable[myChoice];
+            const computerScore = scoreTable[computerChoice];
+            let diff = myScore - computerScore;
+            
+            let message = '';
+            //어떤 규칙을 만들기 위해서는 숫자를 대입 해 사칙연산 등의 연산을 해 보자.
+            if (diff === 0) {
+                message = '무승부';
+            //else if ([-1, 2].includes(diff)) {
+            //else if ([-1, 2].indexOf(diff) > -1) {
+            } else if (diff === -1 || diff === 2) {                
+                //++score;
+                message = '승리';
+                ++me;
+            } else if (diff === -2 || diff === 1) {
+                //--score;
+                message = '패배';
+                ++computer;
+            }            
+
+            //if (me === 3) { 
+            //버그 막기용으로 조건을 넓게 주거나 조건을 더 좁게 주는 것이 더 낳음.
+            if (me >= 3) 
+                $score.textContent = `나의 승리 ${me} : ${computer}`;    
+            } else if (computer >= 3) {
+                $score.textContent = `컴퓨터 승리 ${me} : ${computer}`;
+            } else {
+                //버그로 내가 30점을 얻는다고 생각해봐. 위의 if 조건을 넓게 준 이유.
+                $score.textContent = `${message} ${me} : ${computer}`;
+                setTimeout(() => {
+                    clickable = true;
+                    intervalId = setInterval(changeComputerHand, 50)
+                }, 1000);
+            }
+            //$score.textContent = `${message} 총: ${score}점`;   
+        }
+    };
+
+    $rock.addEventListener('click', clickButton);
+    $scissors.addEventListener('click', clickButton);
+    $paper.addEventListener('click', clickButton);
+</script>
+</body>
+</html>

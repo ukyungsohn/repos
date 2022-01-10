@@ -17,18 +17,41 @@
 </head>
 <body>
 <script>
+    //객체의 구조분해 할당. distructuring
+    //변수의 이름과 객체의 속성이름이 같을 때
+    const { body, createElement } = document;
+    //(===) const body = document.body;
+    //(===) const createElement = document.createElement;
+    /* 배열에 대한 구조분해 할당
+    const arr = [1, 2, 3];
+    const one = arr[0];
+    const three = arr[2];
+    (===) const [one, , three] = arr;
+    */
+
+    const $table = document.createElement('table');
+    const $result = document.createElement('div');
     let turn = 'O';
     const data = [];
-    const $table = document.createElement('table');
-    document.body.append($table);
+
+    //document.body.append($table);
+    
+
     for (let i = 0; i < 3; ++i) {
-        data.push([]);
+        //data.push([]);
+        let arr = [];
+        for (let j = 0; j < 3; ++j) {
+            arr.push(null);
+        }
+        data.push(arr);
     }
+
     for (let i = 0; i < 3; ++i) {
         const $tr = document.createElement('tr');
-        
+
         for (let j = 0; j < 3; ++j) {
             const $td = document.createElement('td');
+
             $td.addEventListener('click', (event) => {
                 //칸에 글자가 있나?
                 //칸에 글자O가 있는데 클릭하면 X덮어쓰기가 되지 않아야하고
@@ -43,15 +66,19 @@
                         turn = 'X';
                     }
                 }
-                */
+                */                
                 if (event.target.textContent) return;
-                event.target.textContent = turn;                                    
+                event.target.textContent = turn;
+                //항상 데이터와 화면은 함께 바뀌어야 한다.
+
+                
+                //승부 확인                            
                 if (turn === 'X') {
                     turn = 'O';    
                 } else if (turn === 'O') {
                     turn = 'X';
                 }
-                //승부 확인
+                
                 
 
                 
@@ -60,5 +87,7 @@
         }
         $table.append($tr);
     }
+    body.append($table);
+    body.append($result);
 </script>
 </body>

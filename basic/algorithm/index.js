@@ -1,44 +1,52 @@
-//bubble sort
+let arr = [3, 2, 1, 8, 5, 9, 6, 10, 7, 4];
+let end = arr.length;
+let pivotIdx = 0;
 
-/*
-<정렬 과정>
-버블정렬은 인접한 두 요소를 마지막 요소까지 모두 비교하며 교환하거나 유지하면서 정렬합니다.
-1회전을 수행한 후 정렬 조건에 따라 가장 크거나 작은 요소가 맨 뒤로 이동하기 때문에 
-2회전부터는 가장 끝에 있는 요소는 정렬에서 제외됩니다. 
-쉽게 말해 정렬 1회전을 수행할 때마다 정렬에서 제외되는 요소가 1개씩 늘어나게 됩니다.
-
-<장점>
-단순하게 인접한 두 요소를 비교하기 때문에 구현이 굉장히 단순하다.
-
-<단점>
-수행 시간이 굉장히 오래 걸린다.
-불필요한 교환이 이뤄질 가능성이 크다. 
-(최종 단계에서는 현재 위치가 맞음에도 불구하고, 인접한 두 요소 간의 비교에 의해 위치가 변경된다.)
-*/
-
-let arr = [5,3,8,1,2,7];
-const bubbleAscending = function(arr) {
-    for (let i = 0 ; i < arr.length; ++i) {
-        for (let j = 0; j < arr.length - (i + 1); ++j) {
-            if (arr[j] > arr[j + 1]) {
-                let temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-            }
-        }    
+quickSort(arr, end, pivotIdx);
+function quickSort(arr, end, pivotIdx) {
+    let big;
+    let bigIdx;
+    let small;
+    let smallIdx;
+    let pivot = arr[pivotIdx];
+    for (let i = pivotIdx; i < end; ++i) {
+        if (pivot < arr[i]) {
+            big = arr[i];
+            bigIdx = i;
+            break;
+        }
     }
-    return arr;
+    for (let i = end; i > pivotIdx; --i) {
+        if (pivot > arr[i]) {
+            small = arr[i];
+            smallIdx = i;
+            break;
+        }
+    }
+    //smallIdx, bigIdx가 있느냐 없느냐 -> 그럼 자기 자신
+    //smallIdx나 bigIdx가 pivotIdx와 같은가?
+
+    //엇갈리느냔 안 엇갈리느냐
+    if (smallIdx < bigIdx) {
+    //엇갈릴 때: 작은 값 인덱스가 큰 값 인덱스보다 작을 때
+        let temp = small;
+        arr[smallIdx] = pivot;
+        arr[pivotIdx] = temp;
+        //피봇값은 정렬이 된다. 피봇값의 좌우를 분할시켜 또 퀵정렬을 실행한다.
+        pivotIdx = smallIdx;
+        pivot = arr[pivotIdx];
+        if (arr[pivotIdx - 1]) {
+            quickSort(arr, pivotIdx - 1, 0);           
+        } else if (arr[pivotIdx + 1]) {
+            quickSort(arr, arr.length, pivotIdx + 1); 
+        }
+    } else {
+    //안 엇갈릴 때
+        let temp = small;
+        arr[smallIdx] = big;
+        arr[bigIdx] = temp;    
+        smallIdx = null;
+        bigIdx = null;
+    }
 }
-const bubbleDescending = (arr) => {
-    for (let i = 0 ; i < arr.length; ++i) {
-        for (let j = 0; j < arr.length - (i + 1); ++j) {
-            if (arr[j] < arr[j + 1]) {
-                let temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-            }
-        }    
-    }
-    return arr;
-};
-console.log(bubbleDescending(arr));
+console.log(arr);

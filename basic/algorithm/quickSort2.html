@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>    
+</head>
+<body>
+<script>
+let data = [1, 10, 5, 8, 7, 6, 4, 3, 2, 9];
+
+function quickSort(data, start, end) {
+    if (start >= end) { // 원소가 1개인 경우 그대로 두기 
+        return;
+    }
+
+    let key = start; // (피벗)키는 첫 번째 원소
+    let i = start + 1;
+    let j = end;
+    let temp;
+
+    while(i <= j) { // 엇갈릴 때까지 반복
+        while(data[i] <= data[key]) { // 키 값보다 큰 값을 만날 때까지 
+            i++;
+        }
+        while(j > start && data[j] >= data[key]) { // 키 값보다 작은 값을 만날 때까지 
+            j--;
+        }
+        if(i > j) { // 현재 엇갈린 상태면 키 값과 교체 
+            temp = data[j];
+            data[j] = data[key];
+            data[key] = temp;
+        } else { // 엇갈리지 않았다면 i와 j를 교체 
+            temp = data[i];
+            data[i] = data[j];
+            data[j] = temp;
+        }
+    } 
+
+    quickSort(data, start, j - 1);
+    quickSort(data, j + 1, end); 
+}
+
+
+</script>
+</body>
+</html>

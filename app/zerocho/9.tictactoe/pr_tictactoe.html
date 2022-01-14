@@ -1,0 +1,78 @@
+<head>
+<meta charset="utf-8" />
+<title>틱택토</title>
+
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    td {
+        border: 1px solid black;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<script>
+    let turn = 'O';
+    const data = [];
+    const $table = document.createElement('table');
+    document.body.append($table);
+    for (let i = 0; i < 3; ++i) {
+        //data.push([]);
+        let arr = [];
+        for (let j = 0; j < 3; ++j) {
+            arr.push(null);
+        }
+        data.push(arr);
+    }
+
+    for (let i = 0; i < 3; ++i) {
+        const $tr = document.createElement('tr');
+        let tdId = 'td' + i;
+        for (let j = 0; j < 3; ++j) {
+            const $td = document.createElement('td');
+            $td.id = tdId + j;
+            $td.addEventListener('click', (event) => {
+                //칸에 글자가 있나?
+                //칸에 글자O가 있는데 클릭하면 X덮어쓰기가 되지 않아야하고
+                //                          X의 turn에서 O의 turn으로 바뀌지 않아야한다.
+                //없다.
+                /*
+                if (!event.target.textContent) {
+                    event.target.textContent = turn;                                    
+                    if (turn === 'X') {
+                        turn = 'O';    
+                    } else if (turn === 'O') {
+                        turn = 'X';
+                    }
+                }
+                */                
+                if (event.target.textContent) return;
+                event.target.textContent = turn;
+                //항상 데이터와 화면은 함께 바뀌어야 한다.
+                const row = event.target.id.slice(2,3);
+                const col = event.target.id.slice(3);
+                data[row][col] = turn;
+                console.log(data);
+                
+                //승부 확인                            
+                if (turn === 'X') {
+                    turn = 'O';    
+                } else if (turn === 'O') {
+                    turn = 'X';
+                }
+                
+                
+
+                
+            });
+            $tr.append($td);
+        }
+        $table.append($tr);
+    }
+</script>
+</body>

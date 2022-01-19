@@ -1,0 +1,68 @@
+<html>
+<head>
+
+</head>
+<body>
+<div>
+    <input type="text" id="input" style="width:100px; margin:17px; float:left;">
+    <div style="width:100px; height:50px; border: 1px solid black; margin: 20px; text-align: center; line-height: 45px; float:left;"
+    onclick="buttonClick()">
+        <span>버튼</span>
+    </div>
+    <div style="width:100px; height:50px; border: 1px solid black; margin: 20px; text-align: center; line-height: 45px; float:left;"
+    onclick="deleteButton()">
+        <span>삭제</span>
+    </div>
+    <div id="boxes" style="padding:15px; float:left;">
+    
+    </div>
+</div>
+<script>
+    let arr = [];
+    let num = 0;
+    
+    const deleteButton = function() {
+        const inputValue = document.querySelector('#input').value; 
+        arr.splice(inputValue, 1);
+        buttonClick('delete');
+    };
+
+    const buttonClick = function(param) {
+        const boxes = document.querySelector('#boxes');       
+        boxes.remove();
+
+        const newBoxes = document.createElement('div');
+        newBoxes.id = 'boxes';
+        newBoxes.style.padding = '15px';
+        newBoxes.style.float = 'left';
+        newBoxes.remove();
+        document.body.append(newBoxes);
+
+        if (!param) {
+            ++num;
+            const inputValue = document.querySelector('#input').value;        
+            if (inputValue) {
+                arr.splice(inputValue, 0, num);
+            } else {
+                arr.push(num);
+            }            
+        }   
+
+        for (let i = 0; i < arr.length; ++i) {
+            const div = document.createElement('div');
+            div.style.width = '80px';
+            div.style.height = '40px';
+            div.style.border = '1px solid black';
+            div.style.margin = '2px';
+            div.innerHTML = arr[i];
+            div.onclick = function() {
+                console.log(i);
+                this.remove();
+                arr.splice(i, 1);
+            }
+            newBoxes.append(div);        
+        }
+    };
+</script>
+</body>
+</html>

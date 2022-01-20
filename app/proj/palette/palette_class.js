@@ -4,8 +4,10 @@ window.addEventListener('DOMContentLoaded', function() {
     
     class ClickedDiv {
     
-        constructor(palette) {
+        constructor(palette, borderName, trueOrFalse) {
             this.palette = palette;
+            this.borderName = borderName;
+            this.trueOrFalse = trueOrFalse;
         }
 
         //palette = document.getElementById('palette');
@@ -54,13 +56,15 @@ window.addEventListener('DOMContentLoaded', function() {
             const widthCount = 8;
             const heightCount = 27;
             const divWidth = 26;
+            let _this = this;
 
-            for (let j = 0; j < this.heightCount; ++j) {
+            for (let j = 0; j < heightCount; ++j) {
                 const wrapper = document.createElement('div');
                 wrapper.className = 'wrapper';
                 wrapper.style.width = Math.ceil(divWidth * 8 / 10) * 10 + 'px';        
                 for (let i = 0; i < widthCount; ++i) {
                     const div = document.createElement('div');
+                    //(1)6줄 클래스이름으로 바꾸기
                     div.style.width = '20px';
                     div.style.height = '20px';
                     div.style.border = '2px solid black';
@@ -68,15 +72,17 @@ window.addEventListener('DOMContentLoaded', function() {
                     div.style.marginRight = '1px';
                     div.style.marginBottom = '4px';
                     // div.style.margin = '1px';
-                    const divBackColor = arr[8 * j + i];
+                    const divBackColor = this.arr[8 * j + i];
                     div.style.backgroundColor = divBackColor;         
                     div.addEventListener('click', function(event) {
-                        divClicked && divClicked.classList.remove('redBorder');
-                        event.target.classList.add('redBorder');
+                        divClicked && divClicked.classList.remove(_this.borderName);
+                        event.target.classList.add(_this.borderName);
                         display.style.backgroundColor = divBackColor;
-                        colorCode.innerHTML = divBackColor;
+                        colorCode.innerHTML = '';
+                        if (_this.trueOrFalse) colorCode.innerHTML = divBackColor;
                         divClicked = event.target;
                     });
+                    //(2)함수 하나가 넘많은 역할함. makeColorItem이란 애가 있어서 걔를 고치면 되겠지 쪼개자.
                     wrapper.append(div);
                 }
                 palette.append(wrapper);
@@ -84,10 +90,14 @@ window.addEventListener('DOMContentLoaded', function() {
         }
 
     }
-
+    //함수를 파라미터로 넣기
     palette1 = document.getElementById('palette1');
-    let pal = new ClickedDiv(palette1);
+    let pal = new ClickedDiv(palette1, 'redBorder', true);
     pal.makePalette(palette1);
     console.log(pal);
+
+    palette2 = document.getElementById('palette2');
+    let pal2 = new ClickedDiv(palette2, 'blueBorder', false);
+    pal2.makePalette(palette2);
 
 });

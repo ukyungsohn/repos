@@ -24,7 +24,11 @@
     const deleteButton = function() {
         const inputValue = document.querySelector('#input').value; 
         arr.splice(inputValue, 1);
-        buttonClick('delete');
+        //buttonClick('delete');
+        //boxes의 childnode가 배열로잡혀서 걔 인덱스번호를 잡는다.
+        const boxes = document.querySelector('#boxes'); 
+        //console.log(boxes.childNodes);
+        boxes.childNodes[inputValue].remove();
     };
 
     const buttonClick = function(param) {
@@ -56,7 +60,6 @@
             div.style.margin = '2px';
             div.innerHTML = arr[i];
             div.onclick = function() {
-                console.log(i);
                 this.remove();
                 arr.splice(i, 1);
             }

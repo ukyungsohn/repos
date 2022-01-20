@@ -47,6 +47,8 @@ window.addEventListener('DOMContentLoaded', function() {
             }
             return arr;
         }
+        //0,3,6,9~ 6개인 배열을 쓰고 나서 걔를 쓴다. 걔를 3번 돌린다. RGB에 대해서.
+        //hexademical쓰지 않게
 
         arr = this.getArr();        
 
@@ -99,5 +101,8 @@ window.addEventListener('DOMContentLoaded', function() {
     palette2 = document.getElementById('palette2');
     let pal2 = new ClickedDiv(palette2, 'blueBorder', false);
     pal2.makePalette(palette2);
+
+    //쪼개서 만든다.
+    //색 하나의 div도 클래스로 만들 수 있다.
 
 });

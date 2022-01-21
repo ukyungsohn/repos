@@ -1,0 +1,42 @@
+<head>
+<link rel="stylesheet" href="html5.css">
+</head>
+<body>
+<anchor></anchor>
+<list></list>
+
+<progress id="progress" value="100" min="0" max="200"></progress>
+
+<meter min="0" max="100" low="20" high="65" optimum="15" value="100"></meter>
+
+<details id="details">
+    <summary>
+        <span></span>
+        <span>What is the best 반찬?</span>
+    </summary>
+    <span>It's 김치!</span>
+</details>
+
+<input type="date">
+<input type="month">
+<input type="week">
+<input type="time">
+
+<!--
+<picture>
+    <source srcset="src/01.jpeg" media="(min-width:1200px)" />
+    <source srcset="src/02.jpeg" media="(min-width:900px)" />
+    <source srcset="src/03.jpeg" media="(min-width:500px)" />
+    <img src="src/04.jpeg"/> 디폴트이미지
+</picture>
+-->
+
+<label for="movie">What is your favorite movie?</label>
+<input type="text" list="movie-options">
+<datalist id="movie-options">
+    <option value="Dune"></option>
+    <option value="Dark Waters"></option>
+    <option value="Iron Man II"></option>
+    <option value="Matrix II"></option>
+</datalist>
+</body>

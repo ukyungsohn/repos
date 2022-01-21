@@ -1,3 +1,12 @@
+.colorBox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid black;
+    float: left;
+    margin-right: 1px;
+    margin-bottom: 4px;
+}
+
 .redBorder {
     border: 2px solid red !important;
 }

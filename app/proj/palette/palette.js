@@ -4,7 +4,7 @@ window.addEventListener('DOMContentLoaded', function() {
     const display = document.getElementById('display');
     const colorCode = document.getElementById('colorCode');
 
-    let hexademical = function(number) {
+    let hexadecimal = function(number) {
         if (number < 10) return number;
         switch(number) {            
             case 10: return 'A';
@@ -25,11 +25,11 @@ window.addEventListener('DOMContentLoaded', function() {
         const size = 3;
         let arr = [];
         for (i = 0; i < 16; i += size) {
-            l = hexademical(i);
+            l = hexadecimal(i);
             for (j = 0; j < 16; j += size) {
-                m = hexademical(j);
+                m = hexadecimal(j);
                 for (k = 0; k < 16; k += size) {
-                    n = hexademical(k); 
+                    n = hexadecimal(k); 
                     arr.push('#' + l + m + n);
                 }
             }

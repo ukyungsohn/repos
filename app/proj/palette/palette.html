@@ -1,7 +1,47 @@
 <html>
 <head>
 <link rel="stylesheet" href="palette.css">
-<script src="palette_class.js"></script>
+<script type="text/javascript" src="palette_class.js"></script>
+<script type="text/javascript">
+    window.onload = function() {
+        let FirstPalette = new ClickedDiv();
+        //PaletteMaker.makePalette(5);
+        FirstPalette.makePalette('palette1', {
+            borderName: 'blueBorder',
+            // clickFunction: function() {
+            //     console.log(arguments);
+            // }
+        });
+        let SecondPalette = new ClickedDiv();
+        SecondPalette.makePalette('palette2', {
+            clickFunction: SecondClickFunction
+        });
+
+        function SecondClickFunction(color, event) {
+            // 외부에서 팔레트의 함수를 만들어 넣는 방법
+            // this가 어떤 객체를 가리키는지 bind를 해야함
+            // bind 위치는 팔레트의 makeColorItem 함수
+            // 각각의 colorItem마다 클릭시 사용하는 색상 파라미터가
+            // 다르므로 color값도 bind를 한다
+
+            //console.log(this, arguments);
+            // 클릭된 colorItem에 대한 처리
+            if (this.selectedItem) {
+                this.selectedItem.classList.remove(this.borderName);
+            }
+            this.selectedItem = event.target;
+            this.selectedItem.classList.add(this.borderName);
+
+            // 디스플레이 영역에 대한 처리
+            this.display.style.backgroundColor = color;
+            this.colorCode.innerHTML = color;
+        }
+
+        // try-catch를 쓰는 이유?
+        //console.log(Math.random());
+    };
+
+</script>
 </head>
 <body>
     <div id="palette1" style="float:left;"></div>

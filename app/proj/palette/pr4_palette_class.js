@@ -65,7 +65,6 @@ class ClickedDiv {
         this.borderName = option.borderName || 'redBorder';
 
         // 옵션-2) 클릭이벤트 처리?
-        //팔레트 별로 클릭 이벤트는 다르지만 
         //아이템마다 클릭이 다르지 않기 때문에 여기서 한다.
         // this.clickFunction = clickFunction || function() {
         //     console.log('here');

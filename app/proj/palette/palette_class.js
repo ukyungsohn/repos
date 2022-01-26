@@ -71,7 +71,7 @@ class ClickedDiv {
         //     console.log('here');
         // };
         this.clickFunction = option.clickFunction || function(color, event) {
-            //console.log(this, arguments)
+            console.log(this, arguments)
             if (this.selectedItem) {
                 this.selectedItem.classList.remove(this.borderName);
             }

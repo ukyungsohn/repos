@@ -5,9 +5,13 @@
 </head>
 <body>
     What fruit do you like?
-    
-    <div><div class="checkbox"></div>Orange</div>
-    <div><div class="checkbox"></div>Apple</div>
-    <button>제출</button>
+    <label><input type="checkbox">Banana</label>
+    <label><input type="checkbox">Kiwi</label>
+    <div onclick="clickCheckbox(event)" name="fruit" val="Orange"><div class="checkbox"></div>Orange</div>
+    <div onclick="clickCheckbox(event)" name="fruit" val="Apple"><div class="checkbox"></div>Apple</div>
+    What color do you like?
+    <div onclick="clickCheckbox(event)" name="color" val="Green"><div class="checkbox"></div>Green</div>
+    <div onclick="clickCheckbox(event)" name="color" val="White"><div class="checkbox"></div>white</div>
+    <button onclick="clickButton()">제출</button>
 </body>
 </html>

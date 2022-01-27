@@ -23,7 +23,7 @@
     let isPrime = true;
     for (let i = 1; i <= 1000; ++i) {
         ++count;
-        for (let j = 2; j <= Math.floor(Math.sqrt(i)); ++j) {
+        for (let j = 2; j <= Math.sqrt(i); ++j) {
             if (i % j === 0) {
                 isPrime = false;                
                 break;

@@ -1,0 +1,14 @@
+.button {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+div.checked div div {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: blue;
+    margin: 2px;
+}

@@ -1,0 +1,64 @@
+<head>
+
+</head>
+<body>
+<script>
+//약수의 개수가 홀수인 것은 뒷면이 된다.
+//약수 구하는 함수를 먼저 만든다.
+
+function getDivisorCount(num) {
+    let count = 0;
+    let i = 1;
+    while (i < num) {
+        if (num % i++ === 0) {
+            count++;
+        }
+    }
+    return count + 1;
+}
+/*
+function getDivisorCount(num) {
+    //let arr = [];
+    let count = 0;
+    for (let i = 1; i <= num; ++i) {
+        if (num % i === 0) {
+            //arr.push(i);
+            count++;
+        }
+    }
+    //console.log(arr);
+    //배열을 return하면 메모리 낭비
+    return count;
+}
+*/
+let arr = [];
+for (let i = 1; i <= 100; ++i) {
+    if (getDivisorCount(i) % 2 !== 0) {
+        arr.push(i);
+    }
+}
+console.log(arr);
+
+/*
+let arr = [];
+for (let i = 0; i < 100; ++i) {
+    arr.push(true);
+}
+for (let i = 1; i <= 100; ++i) {
+    for (let j = 0; j < 100; ++j) {
+        if ((j + 1) % i === 0) {
+            arr[j] = !arr[j];
+        }
+    }
+}
+console.log(arr);
+let newArr = [];
+for (let i = 0; i < arr.length; ++i) {
+    if (!arr[i]) {
+        newArr.push(i + 1);
+    }
+}
+console.log(newArr);
+*/
+</script>    
+</body>

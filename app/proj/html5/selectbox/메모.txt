@@ -1,0 +1,35 @@
+1.selected된 item을 표시한다.
+->obj 객체를 만들어 obj의 selected 속성에 item을 넣는다.
+
+2.selectbox를 클릭하면 option의 item들이 나온다.
+->윗 div에 addEventListner click추가해 for문을 돌려 
+아랫 div에 items를 show시킨다.
+
+3.나열되는 item 중 하나를 클릭하면 그 것으로 대표 selectbox가 바뀐다. selectbox 테두리가 진해진다.
+3-1. 대표 selectbox를 바꾸지 않고 대표 selectbox를 눌러도 테두리가 진해진다.
+3-2. 진한 테두리는 나열될 때나 밖을 눌렀을 때 사라진다.
+3-3. 진한 테두리는 selectbox 클릭 후, 윗 div나 아랫div를 눌렀을 때 나타난다.
+->아랫 div에도 click event추가한다. 클릭 시, obj의 selected를 event.target으로 바꾼다. 윗 div의 테두리 css를 진하게 한다. 
+->selectbox클릭 후, 윗div나 아랫div를 클릭하면 keyup/down/press?이벤트를 넣는다. 그 외 클릭 후, keyup/down/press이벤트를 remove한다.?
+->윗div, 아랫div 모두 keyup/down/press 이벤트 넣어줘야함.
+아랫div의 key~ event로 아이템 리스트 순회시 윗 div의 내용도 바뀌어야함.
+
+div태그에 keyevent넣는법
+<div tabindex=0>
+https://stackoverflow.com/questions/10722589/how-to-bind-keyboard-events-to-div-elements
+
+4.selectbox 클릭 시 나열리스트에서 대표 item의 배경색이 파란색으로 표시돼있다.
+->나열리스트에서 selected된 것은 background-color를 blue로 한다.
+
+5.진한 테두리가 표시될 떄, 키보드 up, down이 먹힌다. 범위는 처음 쓴 option과 마지막으로 쓴 option 사이이다.
+->윗div keyup/down/press event때, e.key가 위/아래/왼쪽/오른쪽 화살표일때만 반응하게하고 option 배열을 이동하게 한다. index0이나 length-1에서는 더이상 움직이지 못하게 한다.
+
+6.나열되는 item위를 mouseover하면 배경색이 파란색이 된다.
+->아랫div에 mouseover event시 background-color:blue
+
+7.나열되는 item을 클릭하지 않고 selectbox 밖 범위를 클릭하면 items나열이 사라진다. 대표 selectbox가 클릭된 후라면 진한 테두리가 얇아진다.
+->body.click시 아랫div display none.
+
+단계별 만들기
+(1)마우스 이벤트만 있는 셀렉트박스
+(2)키이벤트넣기: 방향키, 엔터

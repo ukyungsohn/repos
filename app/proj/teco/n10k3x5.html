@@ -4,7 +4,58 @@
 </head>
 <body>
 <script>
-    
+let n = 10;
+let k = 5;
+let k2 = k % n;
+let i = 1;
+let newArr = [];
+while (newArr.length < n) {
+    console.log(i, (k2 * i) % n);
+    if ((k2 * i) % n) {
+        newArr.push((k2 * i) % n);
+    } else {
+        newArr.push(n);
+    }
+    ++i;
+};
+console.log(newArr);
+/*
+function randomOrder(N, k) {
+    //k가 N보다 크다면 k대신 k를 N으로 나눈 나머지로 시행한 것과 동일하다
+    k = k % N;
+    let arr = [];
+    let begin = k;
+    while (arr.length < N) {
+        arr.push(begin);
+        begin += k;
+        if (begin > N) {
+            begin %= N;
+        }
+    }
+    console.log(arr);
+    return arr;    
+}
+randomOrder(5, 3);
+*/
+/*
+let k2 = k % n;
+let arr = [];
+let newArr = [];
+
+for (let j = 0; j < k2; ++j) {
+    for (let i = 1; i <= n; ++i) {
+        arr.push(i);
+    }
+}
+
+for (let i = 0; i < arr.length; ++i) {
+    if ((i + 1) % k2 === 0) {
+        newArr.push(arr[i]);
+    }
+}
+console.log(arr);
+console.log(newArr);
+*/
 </script>
 </body>
 </html>

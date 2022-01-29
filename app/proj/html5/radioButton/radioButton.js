@@ -58,7 +58,7 @@ window.onload = function() {
             container.append(div);
         }
 
-        //참조하고 있기 때문에 for문 밖에서 가능.
+        //dom객체를 참조하고 있기 때문에 for문 밖에서 가능.
         initSelectedDiv.classList.add('checked');
         data.selected = initSelectedData;
         data.selected.domObj = initSelectedDiv;
